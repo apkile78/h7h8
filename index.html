@@ -274,6 +274,18 @@
 
           return canvas;
         })(),
+        print: function (text) {
+          document.body.innerHTML +=
+            '<pre style="color:lime;background:black;padding:4px;white-space:pre-wrap;">OUT: ' +
+            text +
+            "</pre>";
+        },
+        printErr: function (text) {
+          document.body.innerHTML +=
+            '<pre style="color:red;background:black;padding:4px;white-space:pre-wrap;">ERR: ' +
+            text +
+            "</pre>";
+        },
         setStatus: function (text) {
           if (text) {
             loadingMessage.innerHTML = text;
@@ -300,10 +312,19 @@
       };
       Module.setStatus("Downloading...");
       window.onerror = function (event, source, lineno, colno, error) {
-        if (typeof error === 'number' && Module.getExceptionMessage) {
-          console.log(Module.getExceptionMessage(error));
+        let msg = event;
+        if (typeof error === "number" && Module.getExceptionMessage) {
+          msg = Module.getExceptionMessage(error);
         }
-        alert("Exception thrown, see JavaScript console.");
+        document.body.innerHTML +=
+          '<pre style="color:red;background:black;padding:10px;white-space:pre-wrap;">GAME ERROR: ' +
+          msg +
+          "\nAt: " +
+          source +
+          ":" +
+          lineno +
+          "</pre>";
+        return false;
       };
       window.onbeforeunload = (e) => {
         if (window.game_unsaved)
