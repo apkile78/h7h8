@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
+    <script>
+  window.onerror = function(msg, url, line, col, err) {
+    document.body.innerHTML += '<pre style="color:red;background:black;padding:10px;white-space:pre-wrap;">ERROR: ' + msg + '\nAt: ' + url + ':' + line + '\n' + (err && err.stack ? err.stack : '') + '</pre>';
+    return false;
+  };
+  var origError = console.error;
+  console.error = function() {
+    var args = Array.prototype.slice.call(arguments).join(' ');
+    document.body.innerHTML += '<pre style="color:orange;background:black;padding:10px;">console.error: ' + args + '</pre>';
+    origError.apply(console, arguments);
+  };
+</script>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta
